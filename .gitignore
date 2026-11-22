@@ -1,6 +1,0 @@
-# Build output and Visual Studio files (never commit these)
-bin/
-obj/
-.vs/
-*.user
-*.suo
