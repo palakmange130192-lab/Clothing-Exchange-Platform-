@@ -1,0 +1,52 @@
+@model List<ExchangeRequest>
+@{
+    ViewData["Title"] = "Incoming Requests";
+}
+<h3 class="mb-3">Incoming Requests</h3>
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-info">No one has requested your items yet.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>From</th>
+                    <th>Wants (your item)</th>
+                    <th>Offers</th>
+                    <th>Message</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model)
+                {
+                    <tr title="@r.GetSummary()">
+                        <td>@r.RequesterName</td>
+                        <td>@r.RequestedTitle</td>
+                        <td>@r.OfferedTitle</td>
+                        <td>@r.Message</td>
+                        <td>@r.CreatedAt.ToString("dd MMM yyyy")</td>
+                        <td>@r.Status</td>
+                        <td>
+                            @if (r.Status == "Pending")
+                            {
+                                <form asp-action="Accept" asp-route-id="@r.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-success">Accept</button>
+                                </form>
+                                <form asp-action="Reject" asp-route-id="@r.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-danger">Reject</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

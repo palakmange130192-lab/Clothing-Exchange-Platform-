@@ -1,0 +1,65 @@
+@{
+    var userId = Context.Session.GetInt32("UserId");
+    var userName = Context.Session.GetString("UserName");
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - ReWear</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-green">
+        <div class="container">
+            <a class="navbar-brand fw-bold" asp-controller="Home" asp-action="Index">ReWear</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="nav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" asp-controller="Clothes" asp-action="Index">Browse</a></li>
+                    @if (userId != null)
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="Clothes" asp-action="MyItems">My Items</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Exchange" asp-action="Incoming">Incoming Requests</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Exchange" asp-action="Sent">Sent Requests</a></li>
+                    }
+                </ul>
+                <ul class="navbar-nav">
+                    @if (userId != null)
+                    {
+                        <li class="nav-item"><span class="navbar-text me-3">Hi, @userName</span></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Logout">Logout</a></li>
+                    }
+                    else
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Login">Login</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Register">Register</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        @if (TempData["Msg"] != null)
+        {
+            <div class="alert alert-success">@TempData["Msg"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
+        @RenderBody()
+    </div>
+
+    <footer class="text-center text-muted py-3 border-top">
+        ReWear - Clothes Exchange Platform | .NET Technologies Project
+    </footer>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
