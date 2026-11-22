@@ -1,0 +1,26 @@
+@model Clothing
+@{
+    ViewData["Title"] = "Add clothes";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="dashboard-card">
+            <h2 class="font-heading mb-3">Add clothes</h2>
+
+            @using (Html.BeginForm("Create", "Clothes", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <partial name="_ClothingFields" model="Model" />
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-rewear-primary">Save</button>
+                    <a asp-action="MyClothes" class="btn btn-rewear-outline ms-2">Cancel</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

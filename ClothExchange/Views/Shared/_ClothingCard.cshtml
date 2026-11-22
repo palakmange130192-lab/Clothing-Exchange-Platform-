@@ -1,0 +1,50 @@
+@model Clothing
+@{
+    string image = string.IsNullOrEmpty(Model.ImageUrl) ? "/images/placeholder.svg" : Model.ImageUrl;
+    string badgeClass = "badge-" + Model.Status.ToLower();
+    int? currentUserId = Context.Session.GetInt32("UserId");
+    bool isOwner = currentUserId == Model.OwnerId;
+}
+<div class="product-card">
+    <div class="product-image-wrapper">
+        <span class="product-badge-status @badgeClass">@Model.Status</span>
+        <a asp-controller="Clothes" asp-action="Details" asp-route-id="@Model.Id">
+            <img src="@image" alt="@Model.Title" />
+        </a>
+    </div>
+    <div class="product-body">
+        <div class="product-brand">@Model.Category</div>
+        <h3 class="product-title">
+            <a asp-controller="Clothes" asp-action="Details" asp-route-id="@Model.Id">@Model.Title</a>
+        </h3>
+        <div class="product-meta-row">
+            <span class="product-tag">Size: @Model.Size</span>
+            <span class="product-tag">@Model.Condition</span>
+        </div>
+        <div class="product-footer-owner">
+            <span><i class="fa-regular fa-user me-1"></i>@Model.OwnerName</span>
+            <span class="small"><i class="fa-solid fa-location-dot me-1"></i>@Model.OwnerCity</span>
+        </div>
+
+        <div class="mt-3">
+            @if (isOwner)
+            {
+                <span class="small text-muted"><i class="fa-solid fa-circle-check me-1"></i>Your listing</span>
+            }
+            else if (Model.Status != "Available")
+            {
+                <span class="small text-muted">Already exchanged</span>
+            }
+            else if (currentUserId != null)
+            {
+                <a asp-controller="Exchange" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-rewear-primary btn-sm w-100">
+                    <i class="fa-solid fa-arrows-rotate me-1"></i> Request exchange
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="Login" class="btn btn-rewear-outline btn-sm w-100">Login to request</a>
+            }
+        </div>
+    </div>
+</div>

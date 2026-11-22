@@ -1,0 +1,90 @@
+@{
+    string userName = Context.Session.GetString("UserName");
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ReWear</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/rewear.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <header>
+        <nav class="navbar navbar-expand-lg rewear-navbar">
+            <div class="container">
+                <a class="navbar-brand rewear-brand" asp-controller="Home" asp-action="Index">
+                    <i class="fa-solid fa-leaf"></i><span>ReWear</span>
+                </a>
+
+                <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item"><a class="nav-link" asp-controller="Clothes" asp-action="Index">Explore</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="About">How it works</a></li>
+                        @if (userName != null)
+                        {
+                            <li class="nav-item"><a class="nav-link" asp-controller="Clothes" asp-action="MyClothes">My clothes</a></li>
+                            <li class="nav-item"><a class="nav-link" asp-controller="Exchange" asp-action="MyRequests">Exchange requests</a></li>
+                        }
+                    </ul>
+
+                    <div class="d-flex align-items-center gap-2">
+                        @if (userName != null)
+                        {
+                            <a asp-controller="Clothes" asp-action="Create" class="btn btn-rewear-primary btn-sm">
+                                <i class="fa-solid fa-plus me-1"></i> Add clothes
+                            </a>
+                            <span class="fw-semibold ms-2"><i class="fa-regular fa-user me-1"></i>@userName</span>
+                            <a asp-controller="Account" asp-action="Logout" class="btn btn-rewear-outline btn-sm">Logout</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Account" asp-action="Login" class="btn btn-rewear-outline btn-sm">Login</a>
+                            <a asp-controller="Account" asp-action="Register" class="btn btn-rewear-primary btn-sm">Register</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container flex-grow-1 py-4">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">@TempData["Success"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
+
+        @RenderBody()
+    </main>
+
+    <footer class="rewear-footer" style="padding: 2rem 0; margin-top: 3rem;">
+        <div class="container text-center">
+            <div class="fw-semibold mb-1"><i class="fa-solid fa-leaf me-1"></i> ReWear - Clothing Exchange Platform</div>
+            <div class="small" style="color:#c4d3cb;">.NET Technologies project &bull; Marwadi University</div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

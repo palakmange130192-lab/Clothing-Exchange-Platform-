@@ -1,0 +1,45 @@
+@model HomeViewModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<section class="hero-section">
+    <span class="hero-tag">Swap, don't throw</span>
+    <h1 class="hero-title">Give clothes a second life</h1>
+    <p class="hero-subtitle">Exchange the clothes you no longer wear with other people. No money, no waste.</p>
+    <a asp-controller="Clothes" asp-action="Index" class="btn btn-light btn-lg rounded-pill px-4 me-2">Explore clothes</a>
+    <a asp-controller="Clothes" asp-action="Create" class="btn btn-outline-light btn-lg rounded-pill px-4">List your clothes</a>
+</section>
+
+<div class="row g-3 mb-5 text-center">
+    <div class="col-md-4">
+        <div class="dashboard-card"><div class="h2 mb-0">@Model.TotalUsers</div><div class="text-muted">Members</div></div>
+    </div>
+    <div class="col-md-4">
+        <div class="dashboard-card"><div class="h2 mb-0">@Model.TotalClothes</div><div class="text-muted">Clothes listed</div></div>
+    </div>
+    <div class="col-md-4">
+        <div class="dashboard-card"><div class="h2 mb-0">@Model.TotalExchanges</div><div class="text-muted">Exchanges done</div></div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-end mb-3">
+    <h2 class="font-heading mb-0">Latest listings</h2>
+    <a asp-controller="Clothes" asp-action="Index">View all</a>
+</div>
+
+@if (Model.Latest.Count == 0)
+{
+    <p class="text-muted">No clothes listed yet.</p>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (Clothing item in Model.Latest)
+        {
+            <div class="col-sm-6 col-lg-3">
+                <partial name="_ClothingCard" model="item" />
+            </div>
+        }
+    </div>
+}

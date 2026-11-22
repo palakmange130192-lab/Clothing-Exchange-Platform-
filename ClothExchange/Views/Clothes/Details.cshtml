@@ -1,0 +1,53 @@
+@model Clothing
+@{
+    ViewData["Title"] = Model.Title;
+    bool isOwner = ViewBag.IsOwner;
+    bool loggedIn = Context.Session.GetInt32("UserId") != null;
+    string image = string.IsNullOrEmpty(Model.ImageUrl) ? "/images/placeholder.svg" : Model.ImageUrl;
+}
+
+<a asp-action="Index" class="small"><i class="fa-solid fa-arrow-left me-1"></i> Back to explore</a>
+
+<div class="row g-4 mt-1">
+    <div class="col-md-6">
+        <img src="@image" alt="@Model.Title" class="img-fluid rounded-4 w-100" style="max-height: 520px; object-fit: cover;" />
+    </div>
+
+    <div class="col-md-6">
+        <span class="badge rounded-pill badge-@Model.Status.ToLower() mb-2">@Model.Status</span>
+        <h1 class="font-heading">@Model.Title</h1>
+
+        <div class="mb-3">
+            <span class="product-tag">@Model.Category</span>
+            <span class="product-tag">Size: @Model.Size</span>
+            <span class="product-tag">@Model.Condition</span>
+        </div>
+
+        <p>@Model.Description</p>
+
+        <div class="dashboard-card mb-3">
+            <div><i class="fa-regular fa-user me-2"></i><strong>@Model.OwnerName</strong></div>
+            <div class="text-muted small"><i class="fa-solid fa-location-dot me-2"></i>@Model.OwnerCity &bull; listed on @Model.CreatedAt.ToString("dd MMM yyyy")</div>
+        </div>
+
+        @if (isOwner)
+        {
+            <div class="alert alert-info small">This is your listing. Other members will see a <strong>Request exchange</strong> button here.</div>
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-rewear-outline me-2">Edit</a>
+        }
+        else if (Model.Status != "Available")
+        {
+            <div class="alert alert-secondary">This item has already been exchanged.</div>
+        }
+        else if (loggedIn)
+        {
+            <a asp-controller="Exchange" asp-action="Create" asp-route-id="@Model.Id" class="btn btn-rewear-primary">
+                <i class="fa-solid fa-arrows-rotate me-1"></i> Request exchange
+            </a>
+        }
+        else
+        {
+            <a asp-controller="Account" asp-action="Login" class="btn btn-rewear-primary">Login to request exchange</a>
+        }
+    </div>
+</div>
