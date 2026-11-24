@@ -9,10 +9,12 @@ namespace ClothExchange.Controllers;
 public class ClothesController : Controller
 {
     private readonly DbHelper _db;
+    private readonly IWebHostEnvironment _env;
 
-    public ClothesController(DbHelper db)
+    public ClothesController(DbHelper db, IWebHostEnvironment env)
     {
         _db = db;
+        _env = env;
     }
 
     // Id of the logged-in user (0 if nobody)
@@ -70,8 +72,14 @@ public class ClothesController : Controller
 
     [LoginRequired]
     [HttpPost]
-    public IActionResult Create(Clothing model)
+    public IActionResult Create(Clothing model, IFormFile? photo)
     {
+        // a photo is required when adding a new item
+        if (photo == null || photo.Length == 0)
+        {
+            ModelState.AddModelError("ImageUrl", "Please choose a photo");
+        }
+
         if (!ModelState.IsValid)
         {
             return View(model);
@@ -79,6 +87,8 @@ public class ClothesController : Controller
 
         try
         {
+            model.ImageUrl = SavePhoto(photo!);   // save the file, keep its path
+
             _db.Execute(
                 "INSERT INTO Clothes (Title, Description, Size, Category, Condition, ImageUrl, OwnerId) " +
                 "VALUES (@t, @d, @s, @c, @cond, @img, @owner)",
@@ -115,7 +125,7 @@ public class ClothesController : Controller
 
     [LoginRequired]
     [HttpPost]
-    public IActionResult Edit(Clothing model)
+    public IActionResult Edit(Clothing model, IFormFile? photo)
     {
         if (!ModelState.IsValid)
         {
@@ -124,6 +134,12 @@ public class ClothesController : Controller
 
         try
         {
+            // if a new photo was chosen, save it (otherwise the old path stays in model.ImageUrl)
+            if (photo != null && photo.Length > 0)
+            {
+                model.ImageUrl = SavePhoto(photo);
+            }
+
             // "AND OwnerId = @owner" makes sure users can only edit their own items
             _db.Execute(
                 "UPDATE Clothes SET Title=@t, Description=@d, Size=@s, Category=@c, Condition=@cond, ImageUrl=@img " +
@@ -171,5 +187,26 @@ public class ClothesController : Controller
             TempData["Error"] = "Could not delete the item: " + ex.Message;
         }
         return RedirectToAction("MyItems");
+    }
+
+    // ---------- Photo upload helper ----------
+    // Saves the uploaded photo in wwwroot/uploads and returns its path
+    private string SavePhoto(IFormFile photo)
+    {
+        string extension = Path.GetExtension(photo.FileName).ToLower();
+        if (extension != ".jpg" && extension != ".jpeg" && extension != ".png" && extension != ".webp")
+        {
+            throw new Exception("Only JPG, PNG or WEBP photos are allowed.");
+        }
+
+        string folder = Path.Combine(_env.WebRootPath, "uploads");
+        Directory.CreateDirectory(folder);
+
+        string fileName = Guid.NewGuid().ToString() + extension;   // random name
+        using (var stream = new FileStream(Path.Combine(folder, fileName), FileMode.Create))
+        {
+            photo.CopyTo(stream);
+        }
+        return "/uploads/" + fileName;
     }
 }

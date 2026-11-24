@@ -5,7 +5,7 @@
 <div class="row justify-content-center">
     <div class="col-md-7">
         <h3 class="mb-3">Add Clothing Item</h3>
-        <form asp-action="Create" method="post">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <partial name="_Form" model="Model" />
             <button type="submit" class="btn btn-success">Save</button>
             <a asp-action="MyItems" class="btn btn-outline-secondary">Cancel</a>

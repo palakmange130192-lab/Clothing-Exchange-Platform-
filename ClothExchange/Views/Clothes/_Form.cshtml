@@ -51,6 +51,12 @@
 </div>
 
 <div class="mb-3">
-    <label asp-for="ImageUrl" class="form-label"></label>
-    <input asp-for="ImageUrl" class="form-control" />
+    <label class="form-label">Photo</label>
+    <input type="hidden" asp-for="ImageUrl" />
+    <input type="file" name="photo" accept="image/*" class="form-control" />
+    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        <img src="@Model.ImageUrl" class="rounded mt-2" style="max-height:150px" />
+    }
 </div>

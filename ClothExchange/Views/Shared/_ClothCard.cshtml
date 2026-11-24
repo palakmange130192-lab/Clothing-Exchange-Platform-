@@ -2,7 +2,7 @@
 <div class="card h-100 shadow-sm">
     @if (!string.IsNullOrEmpty(Model.ImageUrl))
     {
-        <img src="@Model.ImageUrl" class="card-img-top cloth-img" alt="@Model.Title" />
+        <img src="@Model.ImageUrl" class="card-img-top cloth-img" style="object-fit: contain; background-color: #fff;" alt="@Model.Title" />
     }
     else
     {

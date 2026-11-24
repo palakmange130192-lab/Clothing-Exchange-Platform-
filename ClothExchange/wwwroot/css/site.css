@@ -1,6 +1,11 @@
 .bg-green { background-color: #1B4332; }
 .hero { background-color: #2D6A4F; color: #fff; }
-.cloth-img { width: 100%; height: 220px; object-fit: cover; }
+.cloth-img {
+    width: 100%;
+    height: 220px;
+    object-fit: contain;
+    background-color: #fff;
+}
 .placeholder-box {
     display: flex;
     align-items: center;
