@@ -1,4 +1,0 @@
-/* small extra rules on top of rewear.css */
-.validation-summary-valid { display: none; }
-.field-validation-error { display: block; }
-.input-validation-error { border-color: #dc3545; }
