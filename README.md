@@ -12,6 +12,28 @@ Made for the **.NET Technologies (01CE1523)** course.
 - Accept or reject incoming requests
 - REST API: `GET / POST / PUT / DELETE  /api/clothes`
 
+## Requirements (on any laptop)
+- **Visual Studio 2022 version 17.12 or newer**, with the **ASP.NET and web development** workload (this installs .NET 9 and SQL Server LocalDB)
+- Internet connection on the first run (NuGet downloads one package)
+
+> Older Visual Studio? Open `ClothExchange/ClothExchange.csproj` and change `net9.0` to `net8.0`.
+
+## How to run
+1. In Visual Studio: **Git -> Clone Repository**, paste this repo's URL, and click **Clone**.
+2. Open `Clothing-Exchange-Platform.sln`.
+3. Press **F5** (the green **http** button).
+4. The database `ClothExchangeDb` and its tables are created automatically on the first run. Register two users to try the exchange flow.
+
+Each laptop has its own local database, so users and items are not shared between laptops.
+
+## If the app shows "network-related or instance-specific error"
+LocalDB is not running. Open a Command Prompt and run:
+```
+sqllocaldb create MSSQLLocalDB
+sqllocaldb start MSSQLLocalDB
+```
+Then press F5 again.
+
 ## Project structure
 ```
 ClothExchange/

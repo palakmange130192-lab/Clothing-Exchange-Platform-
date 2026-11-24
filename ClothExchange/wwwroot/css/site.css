@@ -1,0 +1,11 @@
+.bg-green { background-color: #1B4332; }
+.hero { background-color: #2D6A4F; color: #fff; }
+.cloth-img { width: 100%; height: 220px; object-fit: cover; }
+.placeholder-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #EFE9DF;
+    font-size: 4rem;
+}
+body { background-color: #FCFBF7; }

@@ -1,0 +1,53 @@
+@model List<Clothing>
+@{
+    ViewData["Title"] = "My Items";
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>My Items</h3>
+    <a class="btn btn-success" asp-action="Create">+ Add Item</a>
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-info">You have not added any items yet.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Size</th>
+                    <th>Condition</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Title</td>
+                        <td>@item.Category</td>
+                        <td>@item.Size</td>
+                        <td>@item.Condition</td>
+                        <td>@item.Status</td>
+                        <td>
+                            <a class="btn btn-sm btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">View</a>
+                            @if (item.Status == "Available")
+                            {
+                                <a class="btn btn-sm btn-outline-success" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            }
+                            <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline"
+                                  onsubmit="return confirm('Delete this item?');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
