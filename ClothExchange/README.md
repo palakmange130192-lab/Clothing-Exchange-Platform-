@@ -7,7 +7,11 @@
    (or in a terminal inside this folder: `dotnet run`, then open http://localhost:5067)
 3. The database `ClothExchangeDb` and all tables are created automatically on the first run.
 4. If you use full SQL Server instead of LocalDB, change the connection string in `appsettings.json`.
+## Clothing Exchange Process
 
+Users can explore available clothing items and find
+items they wish to exchange. They can select suitable
+items and submit an exchange request to another user.
 ## Demo flow (do this in the viva)
 1. Register user A and user B (use two browsers / one normal + one incognito).
 2. Login as A -> My Items -> Add Item (add 1-2 items).
